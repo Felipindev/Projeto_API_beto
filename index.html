@@ -1,12 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <title>Tela Inicial</title>
-</head>
-<body>
-    <div class="container"></div>
-</body>
+  </head>
+  <body>
+    <header class="topo">
+      <div class="topo-conteudo">
+        <h1>Painel JSONPlaceholder</h1>
+        <div id="resumo" class="resumo"></div>
+        <button id="btn-buscar" class="btn-buscar">
+          Buscar dados na API
+        </button>
+      </div>
+      <nav class="abas">
+        <button class="aba" id="usuarios">Usuários</button>
+        <button class="aba" id="posts">Posts</button>
+        <button class="aba" id="comentarios">Comentários</button>
+        <button class="aba" id="fotos">Fotos</button>
+      </nav>
+    </header>
+
+    <main>
+      <p id="status" class="status">Carregando dados…</p>
+
+      <section id="usuarios" class="painel">
+        <div class="barra">
+          <label
+            >Nome
+            <input
+              id="filtro-usuario"
+              type="search"
+              placeholder="Buscar usuário por nome"
+            />
+          </label>
+          <span id="contador-usuarios" class="contador"></span>
+        </div>
+        <div id="lista-usuarios" class="grid"></div>
+      </section>
+
+      <section id="posts" class="painel" hidden>
+        <div class="barra">
+          <label
+            >Título
+            <input
+              id="filtro-post"
+              type="search"
+              placeholder="Buscar post pelo título"
+            />
+          </label>
+          <span id="contador-posts" class="contador"></span>
+        </div>
+        <div id="lista-posts" class="coluna"></div>
+      </section>
+
+      <section id="comentarios" class="painel" hidden>
+        <div class="barra">
+          <label
+            >E-mail
+            <input
+              id="filtro-email"
+              type="search"
+              placeholder="Parte do e-mail"
+            />
+          </label>
+          <label
+            >ID do post
+            <input
+              id="filtro-id-post"
+              type="number"
+              placeholder="Ex.: 12"
+            />
+          </label>
+          <span id="contador-comentarios" class="contador"></span>
+        </div>
+        <div id="lista-comentarios" class="coluna"></div>
+      </section>
+
+      <section id="fotos" class="painel" hidden>
+        <div class="barra">
+          <label
+            >Título
+            <input
+              id="filtro-foto"
+              type="search"
+              placeholder="Buscar foto pelo título"
+            />
+          </label>
+          <span id="contador-fotos" class="contador"></span>
+        </div>
+        <div id="lista-fotos" class="grid grid-fotos"></div>
+      </section>
+    </main>
+  </body>
 </html>
