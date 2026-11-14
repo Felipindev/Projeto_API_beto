@@ -42,6 +42,8 @@ async function iniciar() {
     comments = JSON.parse(localStorage.getItem('comments'));
     photos = JSON.parse(localStorage.getItem('photos'));
 
+    document.getElementById('status').hidden = true;
+
     mostrarUsuarios();
     // mostrarPosts();
     // mostrarComentarios();
