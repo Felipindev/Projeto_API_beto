@@ -2,6 +2,9 @@ const URL = "https://jsonplaceholder.typicode.com";
 
 const abas = document.querySelectorAll('.aba');
 const btnBuscar = document.getElementById('btn-buscar');
+const inputUsuarios = document.getElementById('filtro-usuario');
+const listaUsuarios = document.getElementById('lista-usuarios');
+const contadorUsuarios = document.getElementById('contador-usuarios');
 
 let users = [];
 let posts = [];
@@ -34,20 +37,20 @@ async function iniciar() {
     }
 
     // A partir daqui, tudo vem do localStorage
-    usuarios = JSON.parse(localStorage.getItem('users'));
+    users = JSON.parse(localStorage.getItem('users'));
     posts = JSON.parse(localStorage.getItem('posts'));
-    comentarios = JSON.parse(localStorage.getItem('comments'));
-    fotos = JSON.parse(localStorage.getItem('photos'));
+    comments = JSON.parse(localStorage.getItem('comments'));
+    photos = JSON.parse(localStorage.getItem('photos'));
 
-    document.getElementById('status').remove();
     mostrarUsuarios();
-    mostrarPosts();
-    mostrarComentarios();
-    mostrarFotos();
+    // mostrarPosts();
+    // mostrarComentarios();
+    // mostrarFotos();
     } catch (erro) {
     const status = document.getElementById('status');
     status.textContent = 'Não foi possível carregar os dados da API.';
     status.classList.add('erro');
+    console.error('Erro ao iniciar a aplicação: ', erro);
     }
 }
 
@@ -69,3 +72,37 @@ abas.forEach((aba) => {
     });
     });
 });
+
+function mostrarUsuarios() {
+  // filtra os usuários que tem o texto digitado no nome
+  const termo = inputUsuarios.value.trim().toLowerCase();
+  const filtrados = users.filter((u) => u.name.toLowerCase().includes(termo));
+
+  // percorre cada usuario pra criar o html
+  const cards = filtrados.map((u) => {
+    // find procura a foto do usuário pelo id
+    const foto = photos.find((f) => f.id === u.id);
+
+    // soma 1 para cada post que tiver o mesmo userId do usuário
+    const totalPosts = posts.reduce((total, p) => (p.userId === u.id ? total + 1 : total), 0);
+
+    return `
+      <div class="card usuario">
+        <div class="avatar"><img src="${foto.url}" alt="Foto de ${u.name}"></div>
+        <div>
+          <h3>${u.name}</h3>
+          <p>${u.email}</p>
+          <p>${u.address.city}</p>
+          <p class="qtd">${totalPosts} posts</p>
+        </div>
+      </div>`;
+  });
+
+  listaUsuarios.innerHTML = cards.join('');
+  contadorUsuarios.textContent =
+    filtrados.length + ' de ' + users.length + ' usuários';
+}
+
+inputUsuarios.addEventListener('input', mostrarUsuarios);
+
+iniciar()
