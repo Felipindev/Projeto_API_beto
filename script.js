@@ -5,6 +5,11 @@ const btnBuscar = document.getElementById('btn-buscar');
 const inputUsuarios = document.getElementById('filtro-usuario');
 const listaUsuarios = document.getElementById('lista-usuarios');
 const contadorUsuarios = document.getElementById('contador-usuarios');
+const inputNome = document.getElementById('filtro-nome');
+const inputEmail = document.getElementById('filtro-email');
+const inputIdPost = document.getElementById('filtro-id-post');
+const listaPosts = document.getElementById('lista-posts');
+const contadorPosts = document.getElementById('contador-posts');
 
 let users = [];
 let posts = [];
@@ -45,8 +50,7 @@ async function iniciar() {
     document.getElementById('status').hidden = true;
 
     mostrarUsuarios();
-    // mostrarPosts();
-    // mostrarComentarios();
+    mostrarPosts();
     // mostrarFotos();
     } catch (erro) {
     const status = document.getElementById('status');
@@ -106,5 +110,80 @@ function mostrarUsuarios() {
 }
 
 inputUsuarios.addEventListener('input', mostrarUsuarios);
+
+function mostrarPosts() {
+    const nome = inputNome.value.trim().toLowerCase();
+    const email = inputEmail.value.trim().toLowerCase();
+    const idPost = inputIdPost.value.trim();
+
+    // o post é filtrado quando o nome e email do autor combinam com
+    //  o que foi digitado, e quando o id do post é vazio ou combina com o que foi digitado
+    const filtrados = posts.filter((p) => {
+        const autor = users.find((u) => u.id === p.userId);
+
+        const nomeCombina = autor.name.toLowerCase().includes(nome);
+        const emailCombina = autor.email.toLowerCase().includes(email);
+        const idCombina = idPost === '' || p.id === Number(idPost);
+
+        return nomeCombina && emailCombina && idCombina;
+    });
+
+    const cards = filtrados.map((p) => {
+        const autor = users.find((u) => u.id === p.userId);
+        const foto = photos.find((f) => f.id === p.userId); // foto com o id do usuário
+        const totalComentarios = comments.filter((c) => c.postId === p.id).length;
+
+        // clicar no card abre/fecha os comentários
+        // o stopPropagation evita que clicar nos comentários feche a caixa
+        return `
+      <div class="card post" onclick="alternarComentarios(${p.id})">
+        <div class="post-topo">
+          <div class="avatar"><img src="${foto.url}" alt="Foto de ${autor.name}"></div>
+          <div>
+            <strong>${autor.name}</strong>
+            <span>${autor.email}</span>
+          </div>
+        </div>
+        <div class="post-corpo">
+          <p class="post-meta">Post ${p.id}</p>
+          <h3>${p.title}</h3>
+          <p>${p.body}</p>
+          <p class="post-rodape">Ver comentários (${totalComentarios})</p>
+          <div class="comentarios" id="comentarios-${p.id}" onclick="event.stopPropagation()" hidden></div>
+        </div>
+      </div>`;
+    });
+
+    listaPosts.innerHTML = cards.join('');
+    contadorPosts.textContent =
+        filtrados.length + ' de ' + posts.length + ' posts';
+}
+
+inputNome.addEventListener('input', mostrarPosts);
+inputEmail.addEventListener('input', mostrarPosts);
+inputIdPost.addEventListener('input', mostrarPosts);
+
+// comentario
+function criarComentario(c) {
+    return `
+      <div class="comentario">
+        <strong>${c.name}</strong>
+        <small>${c.email}</small>
+        <p>${c.body}</p>
+      </div>`;
+}
+
+function alternarComentarios(idPost) {
+    const caixa = document.getElementById('comentarios-' + idPost);
+
+    if (caixa.hidden) {
+        // só pega os comentários desse post quando abre
+        const doPost = comments.filter((c) => c.postId === idPost);
+        caixa.innerHTML = doPost.map(criarComentario).join('');
+        caixa.hidden = false;
+    } else {
+        caixa.hidden = true;
+    }
+}
 
 iniciar()
