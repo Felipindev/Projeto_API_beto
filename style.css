@@ -126,10 +126,9 @@ main {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
   gap: 16px;
 }
-.grid-fotos { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
 
 .coluna {
   display: flex;
@@ -142,7 +141,7 @@ main {
   background: var(--cartao);
   border: 1px solid var(--borda);
   border-radius: 10px;
-  padding: 16px;
+  padding: 26px;
 }
 
 .usuario { display: flex; gap: 14px; align-items: center; }
@@ -176,7 +175,7 @@ main {
 
 .post h3 { margin: 4px 0 8px; font-size: 1.1rem; }
 .post-meta { margin: 0; font-size: 0.85rem; color: var(--suave); }
-.post p { margin: 0 0 12px; }
+.post p { margin: 0 0 12px; cursor: pointer; }
 
 .btn-comentarios {
   background: var(--tinta);
