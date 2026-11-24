@@ -134,7 +134,6 @@ function mostrarPosts() {
         const totalComentarios = comments.filter((c) => c.postId === p.id).length;
 
         // clicar no card abre/fecha os comentários
-        // o stopPropagation evita que clicar nos comentários feche a caixa
         return `
       <div class="card post" onclick="alternarComentarios(${p.id})">
         <div class="post-topo">
@@ -165,10 +164,13 @@ inputIdPost.addEventListener('input', mostrarPosts);
 
 // comentario
 function criarComentario(c) {
+    // pega um user aleatorio para ser o autor de um único comentário por post sem repetir (usando random)
+    const autor = users[Math.floor(Math.random() * users.length)];
+
     return `
       <div class="comentario">
         <strong>${c.name}</strong>
-        <small>${c.email}</small>
+        <small>${autor.email}</small>
         <p>${c.body}</p>
       </div>`;
 }

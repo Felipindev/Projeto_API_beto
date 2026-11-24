@@ -173,6 +173,12 @@ main {
 .usuario p { margin: 2px 0 0; font-size: 0.9rem; color: var(--suave);}
 .usuario .qtd { color: var(--tinta); font-weight: 600; }
 
+.lista-posts {
+  display: flex; 
+  flex-direction: column; 
+  gap: 16px; 
+}
+
 .post h3 { margin: 4px 0 8px; font-size: 1.1rem; }
 .post-meta { margin: 0; font-size: 0.85rem; color: var(--suave); }
 .post p { margin: 0 0 12px; cursor: pointer; }
