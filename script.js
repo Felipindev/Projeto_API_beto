@@ -80,28 +80,39 @@ abas.forEach((aba) => {
 });
 
 function mostrarUsuarios() {
-  // filtra os usuários que tem o texto digitado no nome
   const termo = inputUsuarios.value.trim().toLowerCase();
-  const filtrados = users.filter((u) => u.name.toLowerCase().includes(termo));
+  const filtrados = users.filter((u) =>
+    u.name.toLowerCase().includes(termo)
+  );
 
-  // percorre cada usuario pra criar o html
   const cards = filtrados.map((u) => {
-    // find procura a foto do usuário pelo id
     const foto = photos.find((f) => f.id === u.id);
 
-    // soma 1 para cada post que tiver o mesmo userId do usuário
-    const totalPosts = posts.reduce((total, p) => (p.userId === u.id ? total + 1 : total), 0);
+    const totalPosts = posts.reduce(
+      (total, p) => (p.userId === u.id ? total + 1 : total),
+      0
+    );
 
     return `
-      <div class="card usuario">
-        <div class="avatar"><img src="${foto.url}" alt="Foto de ${u.name}"></div>
-        <div>
+      <div class="card-usuario">
+
+        <!-- Fundo desfocado -->
+        <div class="fundo-blur" style="background-image: url('${foto.url}')"></div>
+
+        <!-- Conteúdo normal -->
+        <div class="conteudo-usuario">
+          <div class="avatar">
+            <img src="${foto.url}" alt="Foto de ${u.name}">
+          </div>
+
           <h3>${u.name}</h3>
           <p>${u.email}</p>
           <p>${u.address.city}</p>
           <p class="qtd">${totalPosts} posts</p>
         </div>
-      </div>`;
+
+      </div>
+    `;
   });
 
   listaUsuarios.innerHTML = cards.join('');
